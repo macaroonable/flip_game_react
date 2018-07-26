@@ -13,6 +13,9 @@ ul {
   content: "";
   display: table;
 }
+.counter {
+  color: red;
+}
 .fill {
   background: #f98bb0;
 }

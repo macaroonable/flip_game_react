@@ -110,13 +110,19 @@ class Board extends React.Component {
   render() {
     return (
       <div>
+        <div>
+          {
+            "not mobile friendly yet - so if you don't see the circles forming a perfect square below, then you should probably use a bigger screen. LOL"
+          }
+        </div>
+        <h1>FLIP GAME - try to flip all circles</h1>
         <div className="counter">
-          {this.state.count}/{dim * dim} filled
+          {this.state.count}/{dim * dim} flipped
         </div>
         <div className="status">
           {this.state.isWinning
-            ? "You won. You can go home now."
-            : "You have to keep playing until you beat this game."}
+            ? "You won. Can you tell me how you did it?"
+            : "clearly you haven't flipped everything yet."}
         </div>
         {Array.apply(null, { length: dim })
           .map(Number.call, Number)
