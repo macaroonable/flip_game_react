@@ -127,6 +127,8 @@ class Board extends React.Component {
         {Array.apply(null, { length: dim })
           .map(Number.call, Number)
           .map(x => this.renderRow(x))}
+
+        <div>{"created by: Hugo, who cannot beat this game"}</div>
       </div>
     );
   }
