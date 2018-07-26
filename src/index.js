@@ -47,7 +47,7 @@ class Board extends React.Component {
     };
   }
 
-  handleClick(row_id, col_id) {
+  handleClick = (row_id, col_id) => {
     const square_replacement = this.state.squares.slice();
     const row_replacement = this.state.squares[row_id].slice();
     row_replacement[col_id] = !row_replacement[col_id];
@@ -101,14 +101,14 @@ class Board extends React.Component {
     //const squares = this.state.squares.slice();
 
     //squares[row_id][col_id] = (squares[row_id][col_id] = "x") ? "o" : "x";
-  }
+  };
 
   renderRow(row_id) {
     return (
       <Row
         row_values={this.state.squares[row_id]}
         row_id={row_id}
-        clickHandler={(row_id, col_id) => this.handleClick(row_id, col_id)}
+        clickHandler={this.handleClick}
       />
     );
   }
