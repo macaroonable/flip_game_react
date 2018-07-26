@@ -1,9 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-
-var start_with_true = true;
-var dim = 9;
+//want to start with all false so we can AND everything to be true
+var dim = 10;
 
 function Square(props) {
   return (
@@ -43,9 +42,19 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(dim).fill(Array(dim).fill(start_with_true ? true : false))
+      squares: Array(dim).fill(Array(dim).fill(false)),
+      isWinning: false,
+      count: 0
     };
   }
+  //this reducer can 'AND' a group of input
+
+  //input is array, output is the 'AND' of all values in that array
+
+  checkWinning = () => {
+    console.log(this.state.squares);
+    return this.state.squares.map(x => x.every(x => x)).every(x => x);
+  };
 
   handleClick = (row_id, col_id) => {
     const square_replacement = this.state.squares.slice();
@@ -73,36 +82,21 @@ class Board extends React.Component {
       square_replacement[row_id + 1] = post_row_replacement;
     }
 
-    this.setState({ squares: square_replacement });
+    this.setState({ squares: square_replacement }, () => {
+      //after set the state. Update the count and check the winning conditon
+      this.setState({
+        count: this.state.squares
+          .map(x => x.filter(x => x).length)
+          .reduce((sum, each) => sum + each, 0)
+      });
 
-    /*
-    row_replacement[col_id] = "x" ? "o" : "x";
-    if (col_id + 1 < dim) {
-      row_replacement[col_id + 1] = "x" ? "o" : "x";
-    }
-    if (col_id - 1 >= 0) {
-      row_replacement[col_id - 1] = "x" ? "o" : "x";
-    }
-    square_replacement[row_id] = row_replacement;
-    console.log(square_replacement);
-
-    if (row_id + 1 < dim) {
-      const row_replacement = this.state.squares[row_id + 1].slice();
-      row_replacement[col_id] = "x" ? "o" : "x";
-      square_replacement[row_id + 1] = row_replacement;
-    }
-
-    if (row_id - 1 >= 0) {
-      const row_replacement = this.state.squares[row_id - 1].slice();
-      row_replacement[col_id] = "x" ? "o" : "x";
-      square_replacement[row_id - 1] = row_replacement;
-    }*/
-
-    //const squares = this.state.squares.slice();
-
-    //squares[row_id][col_id] = (squares[row_id][col_id] = "x") ? "o" : "x";
+      if (this.checkWinning()) {
+        this.setState({ isWinning: true });
+      } else {
+        this.setState({ isWinning: false });
+      }
+    });
   };
-
   renderRow(row_id) {
     return (
       <Row
@@ -116,6 +110,14 @@ class Board extends React.Component {
   render() {
     return (
       <div>
+        <div className="counter">
+          {this.state.count}/{dim * dim} filled
+        </div>
+        <div className="status">
+          {this.state.isWinning
+            ? "You won. You can go home now."
+            : "You have to keep playing until you beat this game."}
+        </div>
         {Array.apply(null, { length: dim })
           .map(Number.call, Number)
           .map(x => this.renderRow(x))}

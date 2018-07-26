@@ -17,7 +17,7 @@ ul {
   background: #f98bb0;
 }
 .unfill {
-  background: #d80202;
+  background: #d1cfbe;
 }
 .status {
   margin-bottom: 10px;
@@ -26,6 +26,7 @@ ul {
   background-color: red;
 }
 .square {
+  border-width: 0;
   border-radius: 50%;
   float: left;
   font-size: 24px;
@@ -36,6 +37,7 @@ ul {
   text-align: center;
   width: 100px;
   transition-duration: 500ms;
+  margin: 2px;
 }
 
 .square:focus {
