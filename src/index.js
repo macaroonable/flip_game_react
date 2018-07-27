@@ -110,11 +110,6 @@ class Board extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          {
-            "not mobile friendly yet - so if you don't see the circles forming a perfect square below, then you should probably use a bigger screen. LOL"
-          }
-        </div>
         <h1>FLIP GAME - try to flip all circles</h1>
         <div className="counter">
           {this.state.count}/{dim * dim} flipped
@@ -124,10 +119,11 @@ class Board extends React.Component {
             ? "You won. Can you tell me how you did it?"
             : "clearly you haven't flipped everything yet."}
         </div>
-        {Array.apply(null, { length: dim })
-          .map(Number.call, Number)
-          .map(x => this.renderRow(x))}
-
+        <div className="board">
+          {Array.apply(null, { length: dim })
+            .map(Number.call, Number)
+            .map(x => this.renderRow(x))}
+        </div>
         <div>{"created by: Hugo, who cannot beat this game"}</div>
       </div>
     );
