@@ -110,7 +110,7 @@ class Board extends React.Component {
   render() {
     return (
       <div>
-        <h1>FLIP GAME - try to flip all circles</h1>
+        <h1>FLIP GAME - try to flip all squares</h1>
         <div className="counter">
           {this.state.count}/{dim * dim} flipped
         </div>
