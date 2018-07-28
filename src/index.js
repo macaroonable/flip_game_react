@@ -4,6 +4,12 @@ import './index.css';
 //want to start with all false so we can AND everything to be true
 var dim = 10;
 
+const initialState = {
+  squares: Array(dim).fill(Array(dim).fill(false)),
+  isWinning: false,
+  count: 0,
+  step: 0
+};
 function Square(props) {
   return (
     <button
@@ -41,17 +47,15 @@ class Row extends React.Component {
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      squares: Array(dim).fill(Array(dim).fill(false)),
-      isWinning: false,
-      count: 0,
-      step: 0
-    };
+    this.state = initialState;
   }
   //this reducer can 'AND' a group of input
 
   //input is array, output is the 'AND' of all values in that array
-
+  resetGame = () => {
+    console.log('resetGame');
+    this.setState(initialState);
+  };
   checkWinning = () => {
     console.log(this.state.squares);
     return this.state.squares.map(x => x.every(x => x)).every(x => x);
@@ -119,6 +123,7 @@ class Board extends React.Component {
           <br />
           {this.state.count}/{dim * dim} flipped
         </div>
+        <button onClick={() => this.resetGame()}>reset game</button>
         <div className="status">
           {this.state.isWinning
             ? 'You won. Can you tell me how you did it?'
