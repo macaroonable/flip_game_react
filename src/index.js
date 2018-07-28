@@ -1,13 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
 //want to start with all false so we can AND everything to be true
 var dim = 10;
 
 function Square(props) {
   return (
     <button
-      className={"square " + (props.cell_value ? "fill" : "unfill")}
+      className={'square ' + (props.cell_value ? 'fill' : 'unfill')}
       onClick={props.clickHandler}
     />
   );
@@ -44,7 +44,8 @@ class Board extends React.Component {
     this.state = {
       squares: Array(dim).fill(Array(dim).fill(false)),
       isWinning: false,
-      count: 0
+      count: 0,
+      step: 0
     };
   }
   //this reducer can 'AND' a group of input
@@ -81,10 +82,12 @@ class Board extends React.Component {
       post_row_replacement[col_id] = !post_row_replacement[col_id];
       square_replacement[row_id + 1] = post_row_replacement;
     }
-
+    this.setState({ step: this.state.step + 1 });
+    //use callback after the setState to ensure the states are already set afterwards
     this.setState({ squares: square_replacement }, () => {
       //after set the state. Update the count and check the winning conditon
       this.setState({
+        //count is the number of total grid flipped
         count: this.state.squares
           .map(x => x.filter(x => x).length)
           .reduce((sum, each) => sum + each, 0)
@@ -112,11 +115,13 @@ class Board extends React.Component {
       <div>
         <h1>FLIP GAME - try to flip all squares</h1>
         <div className="counter">
+          Steps so far: {this.state.step};
+          <br />
           {this.state.count}/{dim * dim} flipped
         </div>
         <div className="status">
           {this.state.isWinning
-            ? "You won. Can you tell me how you did it?"
+            ? 'You won. Can you tell me how you did it?'
             : "clearly you haven't flipped everything yet."}
         </div>
         <div className="board">
@@ -124,7 +129,7 @@ class Board extends React.Component {
             .map(Number.call, Number)
             .map(x => this.renderRow(x))}
         </div>
-        <div>{"created by: Hugo, who cannot beat this game"}</div>
+        <div>{'created by: Hugo, who cannot beat this game'}</div>
       </div>
     );
   }
@@ -148,4 +153,4 @@ class Game extends React.Component {
 
 // ========================================
 
-ReactDOM.render(<Game />, document.getElementById("root"));
+ReactDOM.render(<Game />, document.getElementById('root'));
