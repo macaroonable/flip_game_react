@@ -54,7 +54,7 @@ class Board extends React.Component {
   //input is array, output is the 'AND' of all values in that array
   resetGame = () => {
     console.log('resetGame');
-    this.state = initialState;
+    this.setState(initialState);
   };
   checkWinning = () => {
     console.log(this.state.squares);
