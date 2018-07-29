@@ -2,14 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 //want to start with all false so we can AND everything to be true
-var dim = 10;
 
-const initialState = {
-  squares: Array(dim).fill(Array(dim).fill(false)),
-  isWinning: false,
-  count: 0,
-  step: 0
-};
 function Square(props) {
   return (
     <button
@@ -34,7 +27,7 @@ class Row extends React.Component {
   render() {
     return (
       <div className="board-row" row_id={this.props.row_id}>
-        {Array.apply(null, { length: dim })
+        {Array.apply(null, { length: this.props.dim })
           .map(Number.call, Number)
           .map(x =>
             this.renderSquare(this.props.row_values[x], [this.props.row_id, x])
@@ -47,14 +40,21 @@ class Row extends React.Component {
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = this.initState(5);
   }
   //this reducer can 'AND' a group of input
 
+  initState = x => ({
+    dim: x,
+    squares: Array(x).fill(Array(x).fill(false)),
+    isWinning: false,
+    count: 0,
+    step: 0
+  });
   //input is array, output is the 'AND' of all values in that array
   resetGame = () => {
     console.log('resetGame');
-    this.setState(initialState);
+    this.setState(this.initState(5));
   };
   checkWinning = () => {
     console.log(this.state.squares);
@@ -65,7 +65,7 @@ class Board extends React.Component {
     const square_replacement = this.state.squares.slice();
     const row_replacement = this.state.squares[row_id].slice();
     row_replacement[col_id] = !row_replacement[col_id];
-    if (col_id + 1 < dim) {
+    if (col_id + 1 < this.state.dim) {
       row_replacement[col_id + 1] = !row_replacement[col_id + 1];
     }
     if (col_id - 1 >= 0) {
@@ -81,7 +81,7 @@ class Board extends React.Component {
     }
 
     //change the after row
-    if (row_id + 1 < dim) {
+    if (row_id + 1 < this.state.dim) {
       const post_row_replacement = this.state.squares[row_id + 1].slice();
       post_row_replacement[col_id] = !post_row_replacement[col_id];
       square_replacement[row_id + 1] = post_row_replacement;
@@ -109,6 +109,7 @@ class Board extends React.Component {
       <Row
         row_values={this.state.squares[row_id]}
         row_id={row_id}
+        dim={this.state.dim}
         clickHandler={this.handleClick}
       />
     );
@@ -121,7 +122,7 @@ class Board extends React.Component {
         <div className="counter">
           Steps so far: {this.state.step};
           <br />
-          {this.state.count}/{dim * dim} flipped
+          {this.state.count}/{this.state.dim * this.state.dim} flipped
         </div>
         <button onClick={() => this.resetGame()}>reset game</button>
         <div className="status">
@@ -130,7 +131,7 @@ class Board extends React.Component {
             : "clearly you haven't flipped everything yet."}
         </div>
         <div className="board">
-          {Array.apply(null, { length: dim })
+          {Array.apply(null, { length: this.state.dim })
             .map(Number.call, Number)
             .map(x => this.renderRow(x))}
         </div>
