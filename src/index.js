@@ -40,7 +40,7 @@ class Row extends React.Component {
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.initState(5);
+    this.state = this.initState(6);
   }
   //this reducer can 'AND' a group of input
 
@@ -51,10 +51,8 @@ class Board extends React.Component {
     count: 0,
     step: 0
   });
-  //input is array, output is the 'AND' of all values in that array
-  resetGame = () => {
-    console.log('resetGame');
-    this.setState(this.initState(5));
+  resetGame = new_dim => {
+    this.setState(this.initState(new_dim));
   };
   checkWinning = () => {
     console.log(this.state.squares);
@@ -119,12 +117,20 @@ class Board extends React.Component {
     return (
       <div>
         <h1>FLIP GAME - try to flip all squares</h1>
+        <div>
+          you can change the game difficulty by adjusting the dimension of grids
+        </div>
+        <button onClick={() => this.resetGame(6)}>6</button>
+        <button onClick={() => this.resetGame(7)}>7</button>
+        <button onClick={() => this.resetGame(8)}>8</button>
+        <button onClick={() => this.resetGame(9)}>9</button>
+        <button onClick={() => this.resetGame(10)}>10</button>
+
         <div className="counter">
           Steps so far: {this.state.step};
           <br />
           {this.state.count}/{this.state.dim * this.state.dim} flipped
         </div>
-        <button onClick={() => this.resetGame()}>reset game</button>
         <div className="status">
           {this.state.isWinning
             ? 'You won. Can you tell me how you did it?'
@@ -148,10 +154,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board />
         </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
+        <div className="game-info" />
       </div>
     );
   }
